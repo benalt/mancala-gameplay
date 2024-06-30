@@ -7,6 +7,23 @@ export type MancalaResolution = {
     winner: number | null;
     scores: [number, number];
 };
+export type MancalaTurnStep = {
+    pockets: [
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number
+    ];
+    stores: [number, number];
+};
 export type MancalaGameState = {
     pockets: [
         number,
@@ -25,23 +42,7 @@ export type MancalaGameState = {
     stores: [number, number];
     activePlayer: 0 | 1;
     turns: Array<MancalaTurn>;
-    lastTurnSteps: Array<{
-        pockets: [
-            number,
-            number,
-            number,
-            number,
-            number,
-            number,
-            number,
-            number,
-            number,
-            number,
-            number,
-            number
-        ];
-        stores: [number, number];
-    }>;
+    lastTurnSteps: Array<MancalaTurnStep>;
     resolution?: MancalaResolution;
 };
 export declare function newMancalaGameState(): MancalaGameState;

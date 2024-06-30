@@ -9,6 +9,15 @@ export type MancalaResolution = {
   scores: [number, number];
 };
 
+export type MancalaTurnStep = {
+  // prettier-ignore
+  pockets: [
+    number, number, number, number, number, number, 
+    number, number, number, number, number, number, 
+  ];
+  stores: [number, number];
+};
+
 export type MancalaGameState = {
   // prettier-ignore
   pockets: [
@@ -18,14 +27,7 @@ export type MancalaGameState = {
   stores: [number, number];
   activePlayer: 0 | 1;
   turns: Array<MancalaTurn>;
-  lastTurnSteps: Array<{
-    // prettier-ignore
-    pockets: [
-      number, number, number, number, number, number, 
-      number, number, number, number, number, number, 
-    ];
-    stores: [number, number];
-  }>;
+  lastTurnSteps: Array<MancalaTurnStep>;
   resolution?: MancalaResolution;
 };
 
