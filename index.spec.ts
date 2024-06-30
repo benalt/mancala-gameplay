@@ -179,8 +179,8 @@ describe("applyTurnGameState", () => {
       5, 5, 0, 0, 4, 4, 4, 4, 0, 5, 5, 5,
     ]); //  ^  ^              ^
     //      |  |              |-- will land here, it's empty, so it goes into the store
-    //      |  | --- this is the opposite, it's empty
-    //      | --- this is the starting point
+    //      |  |-- this is the opposite, it's empty
+    //      |-- this is the starting point
   });
 
   it("throws errors on illegal an illegal move", () => {
