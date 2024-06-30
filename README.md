@@ -3,21 +3,21 @@ Library for two-row Mancala Game play.
 
 # Types 
 
-**MancalaGameState**
-  pockets - a 12 item array of all the pocket values
-  stores - a two item
-  activePlayer - 0 or 1 - (player 1 is "0")
-  turns: - an array of the turns as they were taken
-  resolution?: - an object that outlines the winner of the game
+**MancalaGameState***
+* pockets - a 12 item array of all the pocket values
+* stores - a two item
+* activePlayer - 0 or 1 - (player 1 is "0")
+* turns: - an array of the turns as they were taken
+* resolution?: - an object that outlines the winner of the game
 
 **MancalaTurn**
-  player - player who took the turn
-  pocketIndex - pocket that the player selected
-  explanation - human-readable explanation of how the 
+* player - player who took the turn
+* pocketIndex - pocket that the player selected
+* explanation - human-readable explanation of how the 
 
 **MancalaResolution**
-  winner: player who won
-  scores: value of the stores at the end of the game
+* winner: player who won
+* scores: value of the stores at the end of the game
 
 # Mancala Game Play
 * Game play is counter-clockwise, changes to the array will be applied in reverse. That's the way i chose to do it :shrug:
