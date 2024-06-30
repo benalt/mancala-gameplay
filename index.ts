@@ -7,11 +7,23 @@ export type MancalaTurn = {
 export type MancalaResolution = {
   winner: number | null;
   scores: [number, number];
-  turns: Array<MancalaTurn>;
 };
 
 export type MancalaGameState = {
-  pockets: Array<number>;
+  pockets: [
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+  ];
   stores: [number, number];
   activePlayer: 0 | 1;
   turns: Array<MancalaTurn>;
@@ -26,7 +38,7 @@ const NEW_GAME: MancalaGameState = {
 };
 
 export function newMancalaGameState(): MancalaGameState {
-  return { ...NEW_GAME };
+  return structuredClone(NEW_GAME);
 }
 exports.newMancalaGameState = newMancalaGameState;
 
@@ -34,6 +46,11 @@ export function applyTurnGameState(
   incomingGameState: MancalaGameState,
   pocketIdx: number
 ): MancalaGameState {
+  if (!playerCanMakeMove(incomingGameState, pocketIdx)) {
+    throw new Error(
+      `IllegalMoveError - Player ${incomingGameState.activePlayer} cannot select pocket ${pocketIdx}`
+    );
+  }
   const outgoingGameState = structuredClone(incomingGameState);
   const turn: MancalaTurn = {
     player: incomingGameState.activePlayer,
@@ -105,12 +122,22 @@ export function applyTurnGameState(
     outgoingGameState.stores[1] += adds[1];
 
     whatJustHappened = `Player 1 added ${adds[0]} seed from their side, and Player 2 added ${adds[1]} seeds from their side.`;
+    outgoingGameState.resolution = {
+      scores: [...outgoingGameState.stores],
+      winner:
+        outgoingGameState.stores[0] === outgoingGameState.stores[1]
+          ? null
+          : outgoingGameState.stores[0] > outgoingGameState.stores[1]
+            ? 0
+            : 1,
+    };
   } else if (shouldSwitchActivePlayer) {
     outgoingGameState.activePlayer =
       outgoingGameState.activePlayer === 0 ? 1 : 0;
   }
   turn.explanation = whatJustHappened;
   outgoingGameState.turns.push(turn);
+
   return outgoingGameState;
 }
 exports.applyTurnGameState = applyTurnGameState;
