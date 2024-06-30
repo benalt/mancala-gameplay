@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.newMancalaGameState = newMancalaGameState;
+exports.applyTurnGameState = applyTurnGameState;
 exports.isGameOver = isGameOver;
 exports.playerCanMakeMove = playerCanMakeMove;
 const NEW_GAME = {
