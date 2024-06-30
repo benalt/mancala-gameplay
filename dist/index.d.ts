@@ -25,6 +25,23 @@ export type MancalaGameState = {
     stores: [number, number];
     activePlayer: 0 | 1;
     turns: Array<MancalaTurn>;
+    lastTurnSteps: Array<{
+        pockets: [
+            number,
+            number,
+            number,
+            number,
+            number,
+            number,
+            number,
+            number,
+            number,
+            number,
+            number,
+            number
+        ];
+        stores: [number, number];
+    }>;
     resolution?: MancalaResolution;
 };
 export declare function newMancalaGameState(): MancalaGameState;
