@@ -12,6 +12,7 @@ describe("newMancalaGameState", () => {
     expect(newGame.pockets.every((pocket: number) => pocket === 4)).toBe(true);
     expect(newGame.activePlayer).toBe(0);
     expect(newGame.turns).toMatchObject([]);
+    expect(newGame.lastTurnSteps).toMatchObject([]);
     expect(newGame.stores).toMatchObject([0, 0]);
   });
 });
@@ -91,7 +92,14 @@ describe("applyTurnGameState", () => {
       pockets: [5, 5, 5, 5, 0, 4, 4, 4, 4, 4, 4, 4],
       stores: [0, 0],
       activePlayer: 1,
-      turns: [{ explanation: "", player: 0, pocketIndex: 4 }],
+      turns: [
+        {
+          explanation: "",
+          player: 0,
+          pocketIndex: 4,
+        },
+      ],
+      lastTurnSteps: expect.anything(), // this gets verbose, and is checked later on
     };
     expect(gameState).toMatchObject(expected);
   });
@@ -106,9 +114,18 @@ describe("applyTurnGameState", () => {
       stores: [0, 0],
       activePlayer: 0,
       turns: [
-        { explanation: "", player: 0, pocketIndex: 4 },
-        { explanation: "", player: 1, pocketIndex: 10 },
+        {
+          explanation: "",
+          player: 0,
+          pocketIndex: 4,
+        },
+        {
+          explanation: "",
+          player: 1,
+          pocketIndex: 10,
+        },
       ],
+      lastTurnSteps: expect.anything(), // this gets verbose, and is checked later on
     };
     expect(gameState).toMatchObject(expected);
   });
@@ -121,7 +138,14 @@ describe("applyTurnGameState", () => {
       pockets: [5, 5, 6, 6, 1, 5, 5, 5, 5, 5, 5, 5],
       stores: [1, 0],
       activePlayer: 1,
-      turns: [{ explanation: "", player: 0, pocketIndex: 4 }],
+      turns: [
+        {
+          explanation: "",
+          player: 0,
+          pocketIndex: 4,
+        },
+      ],
+      lastTurnSteps: expect.anything(), // this gets verbose, and is checked later on
     };
     expect(gameState).toMatchObject(expected);
   });
@@ -134,7 +158,14 @@ describe("applyTurnGameState", () => {
       pockets: [5, 0, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5],
       stores: [1, 0],
       activePlayer: 1,
-      turns: [{ explanation: "", player: 0, pocketIndex: 1 }],
+      turns: [
+        {
+          explanation: "",
+          player: 0,
+          pocketIndex: 1,
+        },
+      ],
+      lastTurnSteps: expect.anything(), // this gets verbose, and is checked later on
     };
     expect(gameState).toMatchObject(expected);
   });
@@ -247,5 +278,29 @@ describe("applyTurnGameState", () => {
     expect(gameState.turns.map((turn) => turn.pocketIndex)).toMatchObject([
       3, 4, 11, 2, 8, 5,
     ]);
+  });
+
+  it("records changed across ", () => {
+    let gameState = newMancalaGameState();
+    gameState = applyTurnGameState(gameState, 3);
+    const expected = [
+      {
+        pockets: [4, 4, 5, 0, 4, 4, 4, 4, 4, 4, 4, 4],
+        stores: [0, 0],
+      },
+      {
+        pockets: [4, 5, 5, 0, 4, 4, 4, 4, 4, 4, 4, 4],
+        stores: [0, 0],
+      },
+      {
+        pockets: [5, 5, 5, 0, 4, 4, 4, 4, 4, 4, 4, 4],
+        stores: [0, 0],
+      },
+      {
+        pockets: [5, 5, 5, 0, 4, 4, 4, 4, 4, 4, 4, 4],
+        stores: [1, 0],
+      },
+    ];
+    expect(gameState.lastTurnSteps).toMatchObject(expected);
   });
 });

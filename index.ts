@@ -10,23 +10,22 @@ export type MancalaResolution = {
 };
 
 export type MancalaGameState = {
+  // prettier-ignore
   pockets: [
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
+    number, number, number, number, number, number, 
+    number, number, number, number, number, number, 
   ];
   stores: [number, number];
   activePlayer: 0 | 1;
   turns: Array<MancalaTurn>;
+  lastTurnSteps: Array<{
+    // prettier-ignore
+    pockets: [
+      number, number, number, number, number, number, 
+      number, number, number, number, number, number, 
+    ];
+    stores: [number, number];
+  }>;
   resolution?: MancalaResolution;
 };
 
@@ -35,6 +34,7 @@ const NEW_GAME: MancalaGameState = {
   stores: [0, 0],
   activePlayer: 0,
   turns: [],
+  lastTurnSteps: [],
 };
 
 export function newMancalaGameState(): MancalaGameState {
@@ -52,6 +52,7 @@ export function applyTurnGameState(
     );
   }
   const outgoingGameState = structuredClone(incomingGameState);
+  outgoingGameState.lastTurnSteps = [];
   const turn: MancalaTurn = {
     player: incomingGameState.activePlayer,
     pocketIndex: pocketIdx,
@@ -74,7 +75,11 @@ export function applyTurnGameState(
     ) {
       numberOfSeeds -= 1;
       outgoingGameState.stores[outgoingGameState.activePlayer] += 1;
-
+      outgoingGameState.lastTurnSteps.push({
+        // save it in the steps
+        pockets: [...outgoingGameState.pockets],
+        stores: [...outgoingGameState.stores],
+      });
       // we landed on the AP's store, so they get to go again
       if (numberOfSeeds === 0) {
         whatJustHappened = `Player ${
@@ -88,6 +93,11 @@ export function applyTurnGameState(
     pocketIdx = pocketIdx === 0 ? 11 : pocketIdx - 1;
     numberOfSeeds -= 1;
     outgoingGameState.pockets[pocketIdx] += 1;
+    outgoingGameState.lastTurnSteps.push({
+      // save it in the steps
+      pockets: [...outgoingGameState.pockets],
+      stores: [...outgoingGameState.stores],
+    });
 
     // if we added to an empty pocket take from the opposite pocket
     if (numberOfSeeds === 0 && outgoingGameState.pockets[pocketIdx] === 1) {
@@ -103,7 +113,17 @@ export function applyTurnGameState(
 
       outgoingGameState.stores[outgoingGameState.activePlayer] = newStore;
       outgoingGameState.pockets[pocketIdx] = 0;
+      outgoingGameState.lastTurnSteps.push({
+        // save it in the steps
+        pockets: [...outgoingGameState.pockets],
+        stores: [...outgoingGameState.stores],
+      });
       outgoingGameState.pockets[oppositeIdx] = 0;
+      outgoingGameState.lastTurnSteps.push({
+        // save it in the steps
+        pockets: [...outgoingGameState.pockets],
+        stores: [...outgoingGameState.stores],
+      });
     }
   }
 
@@ -120,6 +140,12 @@ export function applyTurnGameState(
 
     outgoingGameState.stores[0] += adds[0];
     outgoingGameState.stores[1] += adds[1];
+
+    outgoingGameState.lastTurnSteps.push({
+      // save it in the steps
+      pockets: [...outgoingGameState.pockets],
+      stores: [...outgoingGameState.stores],
+    });
 
     whatJustHappened = `Player 1 added ${adds[0]} seed from their side, and Player 2 added ${adds[1]} seeds from their side.`;
     outgoingGameState.resolution = {
