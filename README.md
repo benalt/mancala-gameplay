@@ -32,3 +32,17 @@ __applyTurnGameState( incomingGameState: MancalaGameState, pocketIdx: number): M
 __isGameOver(pockets: Array<number>): boolean__ - is the game over.
 
 __playerCanMakeMove(gameState: MancalaGameState, pocketIndex: number ): boolean__ - can the active player select the provided pocket
+
+# Running tests 
+
+```
+npm run test
+```
+
+# Building
+Be srue to run a build for a release.
+
+```
+npm run build
+```
+
