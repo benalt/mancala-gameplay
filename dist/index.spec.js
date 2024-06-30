@@ -161,13 +161,23 @@ describe("applyTurnGameState", () => {
             (0, index_1.applyTurnGameState)(gameState, 10);
         }).toThrow(Error);
     });
-    it("includes a resolution if the game is over ", () => {
+    it("includes a resolution if the game is over (player 1)", () => {
         let gameState = (0, index_1.newMancalaGameState)();
         gameState.pockets = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1];
         gameState = (0, index_1.applyTurnGameState)(gameState, 0);
         expect(gameState.resolution).toMatchObject({
             winner: 1,
             scores: [1, 2],
+        });
+    });
+    it("includes a resolution if the game is over (player 2)", () => {
+        let gameState = (0, index_1.newMancalaGameState)();
+        gameState.pockets = [1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0];
+        gameState.activePlayer = 1;
+        gameState = (0, index_1.applyTurnGameState)(gameState, 6);
+        expect(gameState.resolution).toMatchObject({
+            winner: 0,
+            scores: [2, 1],
         });
     });
     it("winner is null if the game is a tie", () => {

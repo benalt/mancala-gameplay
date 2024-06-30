@@ -190,13 +190,24 @@ describe("applyTurnGameState", () => {
     }).toThrow(Error);
   });
 
-  it("includes a resolution if the game is over ", () => {
+  it("includes a resolution if the game is over (player 1)", () => {
     let gameState = newMancalaGameState();
     gameState.pockets = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1];
     gameState = applyTurnGameState(gameState, 0);
     expect(gameState.resolution).toMatchObject({
       winner: 1,
       scores: [1, 2],
+    });
+  });
+
+  it("includes a resolution if the game is over (player 2)", () => {
+    let gameState = newMancalaGameState();
+    gameState.pockets = [1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0];
+    gameState.activePlayer = 1;
+    gameState = applyTurnGameState(gameState, 6);
+    expect(gameState.resolution).toMatchObject({
+      winner: 0,
+      scores: [2, 1],
     });
   });
 
