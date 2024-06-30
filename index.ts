@@ -25,11 +25,13 @@ const NEW_GAME: MancalaGameState = {
   turns: [],
 };
 
-export function newMancalaGameState(): MancalaGameState {
+function newMancalaGameState(): MancalaGameState {
   return { ...NEW_GAME };
 }
 
-export function applyTurnGameState(
+exports.newMancalaGameState = newMancalaGameState;
+
+function applyTurnGameState(
   incomingGameState: MancalaGameState,
   pocketIdx: number
 ): MancalaGameState {
@@ -113,12 +115,16 @@ export function applyTurnGameState(
   return outgoingGameState;
 }
 
+exports.applyTurnGameState = applyTurnGameState;
+
 export function isGameOver(pockets: Array<number>): boolean {
   return (
     pockets.slice(0, 6).every((val) => val === 0) ||
     pockets.slice(6).every((val) => val === 0)
   );
 }
+
+exports.isGameOver = isGameOver;
 
 export function playerCanMakeMove(
   gameState: MancalaGameState,
@@ -128,3 +134,4 @@ export function playerCanMakeMove(
     ? pocketIndex < 6
     : pocketIndex > 5;
 }
+exports.playerCanMakeMove = playerCanMakeMove;
